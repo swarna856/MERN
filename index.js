@@ -3,12 +3,21 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const EmployeeModel = require("./models/Employee");
 const UserModel = require("./models/Users");
+const dotenv = require("dotenv");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+dotenv.config();
 
-mongoose.connect("mongodb://127.0.0.1:27017/employee");
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then((res) => {
+    console.log("db connection successful");
+  })
+  .catch((Err) => {
+    console.log(Err);
+  });
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
